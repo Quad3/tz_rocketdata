@@ -1,0 +1,59 @@
+Amazon
+Apple
+Alphabet
+Microsoft
+Samsung
+Tencent Holdings
+Meta
+#
+Cisco
+Oracle
+Broadcom
+SAP
+Accenture
+Salesforce
+#
+Tesla
+Adobe
+Intuit
+VMware
+Uber
+#
+Shopify
+Zoom
+Synopsys
+Atlassian
+#
+Nvidia
+TSMC
+ASML
+AMD
+IBM
+Intel
+Sony
+PayPal
+Airbnb
+Baidu
+Autodesk
+Nintendo
+Xiaomi
+EA
+HP
+Nokia
+eBay
+Datadog
+#
+IE Rhodri Middleton
+IE Aiden Chandler
+IE Erik Hensley
+IE Huda Dominguez
+IE Nicholas Stuart
+IE Anya Pacheco
+IE Haris Torres
+IE Ismail Serrano
+IE Carrie Hopkins
+IE Amna Griffith
+IE Fatimah Bender
+IE Louise Gomez
+IE Craig Bennett
+IE Jaxon Burton
