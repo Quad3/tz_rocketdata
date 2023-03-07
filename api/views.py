@@ -12,9 +12,15 @@ class ProducerAPIView(generics.ListAPIView):
         queryset = Producer.objects.prefetch_related('products')\
             .select_related('contact', 'contact__address')
         country = self.request.query_params.get('country')
+        product_id = self.request.query_params.get('product_id')
         if country is not None:
-            queryset = Producer.objects.filter(contact__address__country=country).prefetch_related('products')\
-                .select_related('contact', 'contact__address')
+            queryset = queryset.filter(contact__address__country=country)
+        if product_id is not None:
+            try:
+                product_id = int(product_id)
+            except ValueError:
+                raise ValueError(f'product_id - Invalid number: {product_id}')
+            queryset = queryset.filter(products__id=product_id)
 
         return queryset
 
