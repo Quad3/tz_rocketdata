@@ -1,3 +1,9 @@
-from django.shortcuts import render
+from rest_framework import generics
 
-# Create your views here.
+from api.models import Producer
+from .serializers import ProducerSerializer
+
+
+class ProducerAPIView(generics.ListAPIView):
+    queryset = Producer.objects.all()
+    serializer_class = ProducerSerializer
