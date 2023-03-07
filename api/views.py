@@ -5,5 +5,6 @@ from .serializers import ProducerSerializer
 
 
 class ProducerAPIView(generics.ListAPIView):
-    queryset = Producer.objects.all()
+    queryset = Producer.objects.all().prefetch_related('products')\
+        .select_related('contact', 'contact__address')
     serializer_class = ProducerSerializer

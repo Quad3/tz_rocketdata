@@ -4,6 +4,7 @@ from api.models import Producer, Product, Contact, Address
 
 
 class AddressSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Address
         fields = (
