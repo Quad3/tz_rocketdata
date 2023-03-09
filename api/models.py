@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MinValueValidator
 
 
 class Address(models.Model):
@@ -32,7 +33,10 @@ class Producer(models.Model):
         null=True,
     )
     level = models.IntegerField()
-    debt = models.FloatField()
+    debt = models.DecimalField(max_digits=14,
+                               decimal_places=2,
+                               validators=[MinValueValidator(float('0.0'))]
+                               )
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
