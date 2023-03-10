@@ -1,6 +1,8 @@
 from django.urls import path
 
-from .views import ProducerAPIView, ProducerAboveAverageDebtAPIView
+from .views import (ProducerAPIView,
+                    ProducerAboveAverageDebtAPIView,
+                    )
 
 
 urlpatterns = [

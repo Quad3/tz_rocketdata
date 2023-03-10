@@ -5,7 +5,7 @@ from api.models import Producer
 from .serializers import ProducerSerializer
 
 
-class ProducerAPIView(generics.ListAPIView):
+class ProducerAPIView(generics.ListCreateAPIView):
     serializer_class = ProducerSerializer
 
     def get_queryset(self):
