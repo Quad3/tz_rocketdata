@@ -1,12 +1,14 @@
 from django.db.models import Avg
 from rest_framework import generics
+from rest_framework.response import Response
+from rest_framework import status
 
 from api.models import Producer
-from .serializers import ProducerSerializer
+from .serializers import ProducerListSerializer, ProducerInstanceSerializer
 
 
 class ProducerAPIView(generics.ListCreateAPIView):
-    serializer_class = ProducerSerializer
+    serializer_class = ProducerListSerializer
 
     def get_queryset(self):
         queryset = Producer.objects.prefetch_related('products')\
@@ -26,7 +28,7 @@ class ProducerAPIView(generics.ListCreateAPIView):
 
 
 class ProducerAboveAverageDebtAPIView(generics.ListAPIView):
-    serializer_class = ProducerSerializer
+    serializer_class = ProducerListSerializer
 
     def get_queryset(self):
         avg = Producer.objects.aggregate(Avg('debt'))['debt__avg']
@@ -34,3 +36,19 @@ class ProducerAboveAverageDebtAPIView(generics.ListAPIView):
             .select_related('contact', 'contact__address')
 
         return queryset
+
+
+class ProducerInstanceAPIView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = ProducerInstanceSerializer
+
+    def get_queryset(self):
+        queryset = Producer.objects.prefetch_related('products')\
+            .select_related('contact', 'contact__address')
+        return queryset
+
+    def delete(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance.contact.address)
+        self.perform_destroy(instance.contact)
+        self.perform_destroy(instance)
+        return Response(status=status.HTTP_204_NO_CONTENT)
