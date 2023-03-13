@@ -3,8 +3,11 @@ from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework import status
 
-from api.models import Producer
-from .serializers import ProducerListSerializer, ProducerInstanceSerializer
+from api.models import Producer, Product
+from .serializers import (ProducerListSerializer,
+                          ProducerInstanceSerializer,
+                          ProductInstanceSerializer,
+                          )
 
 
 class ProducerAPIView(generics.ListCreateAPIView):
@@ -52,3 +55,13 @@ class ProducerInstanceAPIView(generics.RetrieveUpdateDestroyAPIView):
         self.perform_destroy(instance.contact)
         self.perform_destroy(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class ProductAPIView(generics.ListCreateAPIView):
+    serializer_class = ProductInstanceSerializer
+    queryset = Product.objects.prefetch_related('producer_set')
+
+
+class ProductInstanceAPIView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = ProductInstanceSerializer
+    queryset = Product.objects.prefetch_related('producer_set')

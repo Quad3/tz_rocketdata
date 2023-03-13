@@ -41,6 +41,17 @@ class ProductSerializer(serializers.ModelSerializer):
         )
 
 
+class ProductInstanceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = (
+            'name',
+            'model',
+            'release_date',
+            'producer_set',
+        )
+
+
 class ProducerSerializerMixin(serializers.ModelSerializer):
     products = ProductSerializer(read_only=True, many=True)
     contact = ContactSerializer()
@@ -60,6 +71,7 @@ class ProducerSerializerMixin(serializers.ModelSerializer):
 
 
 class ProducerListSerializer(ProducerSerializerMixin):
+
     def create(self, validated_data):
         contact_data = validated_data.pop('contact')
         address = Address.objects.create(**contact_data.pop('address'))

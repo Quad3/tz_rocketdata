@@ -40,8 +40,6 @@ class Producer(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        if self.provider:
-            return f"{self.provider.name}->{self.name}"
         return self.name
 
 
