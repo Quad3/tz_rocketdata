@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+from celery.schedules import crontab
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -41,6 +43,7 @@ INSTALLED_APPS = [
     # 3rd party
     'rest_framework',
     'debug_toolbar',
+    'django_celery_results',
 
     # Local
     'api',
@@ -113,7 +116,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Novosibirsk'
 
 USE_I18N = True
 
@@ -136,4 +139,26 @@ INTERNAL_IPS = [
 
 REST_FRAMEWORK = {
     'COERCE_DECIMAL_TO_STRING': False,
+}
+
+CELERY_BROKER_URL = 'redis://redis:6379/0'
+
+CELERY_RESULT_BACKEND = 'django-db'
+
+CELERY_VISIBILITY_TIMEOUT = 30 * 60
+
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+
+CELERY_TIMEZONE = TIME_ZONE
+
+CELERY_BEAT_SCHEDULE = {
+    'add_random_debt': {
+        'task': 'api.tasks.add_random_debt',
+        'schedule': crontab(minute='0', hour='*/3'),
+    },
+    'decrease_random_debt': {
+        'task': 'api.tasks.decrease_random_debt',
+        'schedule': crontab(hour='6', minute='30'),
+    },
 }
