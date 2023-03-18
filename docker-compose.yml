@@ -7,11 +7,35 @@ services:
       - 6379:6379
     environment:
       - TZ=Asia/Novosibirsk
-  
+
   web:
-    build: .
+    build:
+      context: .
+      dockerfile: ./compose/local/django/Dockerfile
     command: python /app/manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/app
     ports:
       - 8000:8000
+    depends_on:
+      - redis
+
+  celery_worker:
+    build:
+      context: .
+      dockerfile: ./compose/local/django/Dockerfile
+    command: /start-celeryworker
+    volumes:
+      - .:/app
+    depends_on:
+      - redis
+    
+  celery_beat:
+    build:
+      context: .
+      dockerfile: ./compose/local/django/Dockerfile
+    command: /start-celerybeat
+    volumes:
+      - .:/app
+    depends_on:
+      - redis
