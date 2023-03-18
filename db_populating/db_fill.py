@@ -2,13 +2,16 @@ import sqlite3
 from string import ascii_uppercase
 from random import choice, randint, random
 import datetime
+import pathlib
+
+CUR_DIR = pathlib.Path(__file__).parent.resolve()
 
 DEBUG = False
-NAMES = 'names.txt'
-ADDRESSES = 'addresses.txt'
-EMAILS = 'emails.txt'
-PRODUCTS = 'raw_products.txt'
-PRODUCERS = 'producers.txt'
+NAMES = CUR_DIR / 'names.txt'
+ADDRESSES = CUR_DIR / 'addresses.txt'
+EMAILS = CUR_DIR / 'emails.txt'
+PRODUCTS = CUR_DIR / 'raw_products.txt'
+PRODUCERS = CUR_DIR / 'producers.txt'
 
 # cur.executemany should be better
 def db_exec(conn, inserts, to):
@@ -104,7 +107,7 @@ def count_table(conn, table_name):
     return cur.fetchone()[0]
 
 def main():
-    database = '../db.sqlite3'
+    database = 'db.sqlite3'
     conn = create_connection(database)
     with conn:
         db_exec(conn, insert_products(), 'products')
