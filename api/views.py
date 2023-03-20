@@ -2,12 +2,15 @@ from django.db.models import Avg
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.authtoken.views import ObtainAuthToken
 
 from api.models import Producer, Product
 from .serializers import (ProducerListSerializer,
                           ProducerInstanceSerializer,
                           ProductInstanceSerializer,
+                          CustomAuthTokenSerializer,
                           )
+from .permission_utils import IsEmployee
 
 
 class ProducerAPIView(generics.ListCreateAPIView):
@@ -43,6 +46,7 @@ class ProducerAboveAverageDebtAPIView(generics.ListAPIView):
 
 class ProducerInstanceAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ProducerInstanceSerializer
+    permission_classes = [IsEmployee]
 
     def get_queryset(self):
         queryset = Producer.objects.prefetch_related('products')\
@@ -65,3 +69,7 @@ class ProductAPIView(generics.ListCreateAPIView):
 class ProductInstanceAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ProductInstanceSerializer
     queryset = Product.objects.prefetch_related('producer_set')
+
+
+class CustomAuthToken(ObtainAuthToken):
+    serializer_class = CustomAuthTokenSerializer

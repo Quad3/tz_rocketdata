@@ -5,6 +5,7 @@ from .views import (ProducerAPIView,
                     ProducerInstanceAPIView,
                     ProductAPIView,
                     ProductInstanceAPIView,
+                    CustomAuthToken,
                     )
 
 
@@ -14,4 +15,5 @@ urlpatterns = [
     path('producer/<int:pk>', ProducerInstanceAPIView.as_view()),
     path('product', ProductAPIView.as_view()),
     path('product/<int:pk>', ProductInstanceAPIView.as_view()),
+    path('api-token-auth', CustomAuthToken.as_view()),
 ]
