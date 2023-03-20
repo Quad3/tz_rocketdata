@@ -112,7 +112,7 @@ def main():
     with conn:
         db_exec(conn, insert_products(), 'products')
         db_exec(conn, insert_producers(), 'producers, addr, contact')
-        db_exec(conn, insert_employees(count_table(conn, 'api_producer')), 'employees') # last
+        # db_exec(conn, insert_employees(count_table(conn, 'api_producer')), 'employees') # last
         db_exec(conn, insert_producer_product(
             count_table(conn, 'api_producer'),
             count_table(conn, 'api_product')), 'producer-product table')
