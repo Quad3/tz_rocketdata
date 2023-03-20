@@ -1,5 +1,9 @@
 from django.db import models
 from django.core.validators import MinValueValidator
+from django.contrib.auth.models import AbstractUser
+from django.utils.translation import gettext_lazy as _
+
+from .managers import CustomUserManager
 
 
 class Address(models.Model):
@@ -52,10 +56,19 @@ class Product(models.Model):
         return self.name
 
 
-class Employee(models.Model):
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
+class Employee(AbstractUser):
+    first_name = models.CharField(_("first name"), max_length=70)
+    last_name = models.CharField(_("last name"), max_length=70)
+    username = None
+    email = models.EmailField(_("email address"), unique=True)
+
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = []
+
+    objects = CustomUserManager()
+
     producer = models.ForeignKey(
         'Producer',
         on_delete=models.CASCADE,
+        null=True,
     )

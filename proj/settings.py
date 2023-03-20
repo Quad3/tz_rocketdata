@@ -139,6 +139,9 @@ INTERNAL_IPS = [
 
 REST_FRAMEWORK = {
     'COERCE_DECIMAL_TO_STRING': False,
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
 }
 
 CELERY_BROKER_URL = 'redis://redis:6379/0'
@@ -162,3 +165,5 @@ CELERY_BEAT_SCHEDULE = {
         'schedule': crontab(hour='6', minute='30'),
     },
 }
+
+AUTH_USER_MODEL = 'api.Employee'
