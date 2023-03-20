@@ -3,6 +3,7 @@ from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.permissions import IsAdminUser
 
 from api.models import Producer, Product
 from .serializers import (ProducerListSerializer,
@@ -15,6 +16,7 @@ from .permission_utils import IsEmployee
 
 class ProducerAPIView(generics.ListCreateAPIView):
     serializer_class = ProducerListSerializer
+    permission_classes = [IsAdminUser]
 
     def get_queryset(self):
         queryset = Producer.objects.prefetch_related('products')\
@@ -35,6 +37,7 @@ class ProducerAPIView(generics.ListCreateAPIView):
 
 class ProducerAboveAverageDebtAPIView(generics.ListAPIView):
     serializer_class = ProducerListSerializer
+    permission_classes = [IsAdminUser]
 
     def get_queryset(self):
         avg = Producer.objects.aggregate(Avg('debt'))['debt__avg']
@@ -46,7 +49,7 @@ class ProducerAboveAverageDebtAPIView(generics.ListAPIView):
 
 class ProducerInstanceAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ProducerInstanceSerializer
-    permission_classes = [IsEmployee]
+    permission_classes = [IsAdminUser|IsEmployee]
 
     def get_queryset(self):
         queryset = Producer.objects.prefetch_related('products')\
@@ -64,11 +67,13 @@ class ProducerInstanceAPIView(generics.RetrieveUpdateDestroyAPIView):
 class ProductAPIView(generics.ListCreateAPIView):
     serializer_class = ProductInstanceSerializer
     queryset = Product.objects.prefetch_related('producer_set')
+    permission_classes = [IsAdminUser]
 
 
 class ProductInstanceAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ProductInstanceSerializer
     queryset = Product.objects.prefetch_related('producer_set')
+    permission_classes = [IsAdminUser]
 
 
 class CustomAuthToken(ObtainAuthToken):
